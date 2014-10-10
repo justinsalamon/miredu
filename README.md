@@ -162,6 +162,7 @@ If you're using the pre-compiled library:
 	linux:dev justin$ cd miredu  
 	linux:miredu justin$
 	linux:miredu justin$ cp builds/linux64/mir-edu.so mir-edu.cat mir-edu.n3 ~/vamp/
+	```
 
 Windows
 
