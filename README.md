@@ -1,4 +1,4 @@
-NOTICE: MIR.EDU has moved to http://github.com/MTG/miredu, please follow this link for the latest version of the library.
+<b>NOTICE:</b> MIR.EDU has moved to http://github.com/MTG/miredu, please follow this link for the latest version of the library.
 
 MIR.EDU
 =======
