@@ -1,7 +1,7 @@
 @prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
 @prefix vamp:     <http://purl.org/ontology/vamp/> .
-@prefix plugbase: <http://www.justinsalamon.com/mir-edu#> .
+@prefix plugbase: <http://vamp-plugins.org/rdf/plugins/mir-edu#> .
 @prefix owl:      <http://www.w3.org/2002/07/owl#> .
 @prefix dc:       <http://purl.org/dc/elements/1.1/> .
 @prefix af:       <http://purl.org/ontology/af/> .
@@ -12,12 +12,13 @@
 <>  a   vamp:PluginDescription ;
     foaf:maker          <http://www.justinsalamon.com/> ;
     foaf:maker          <http://www.vamp-plugins.org/doap.rdf#template-generator> ;
-    foaf:primaryTopic   <http://www.justinsalamon.com/mir-edu> .
+    foaf:primaryTopic   <http://vamp-plugins.org/rdf/plugins/mir-edu> .
 
 :mir-edu a  vamp:PluginLibrary ;
     vamp:identifier "mir-edu"  ; 
     vamp:available_plugin plugbase:attackstartendtimes ; 
     vamp:available_plugin plugbase:logattacktime ; 
+    vamp:available_plugin plugbase:mfcc ; 
     vamp:available_plugin plugbase:rms ; 
     vamp:available_plugin plugbase:spectralcentroid ; 
     vamp:available_plugin plugbase:spectralcrest ; 
@@ -78,6 +79,90 @@ plugbase:logattacktime_output_logattacktime a  vamp:SparseOutput ;
     vamp:unit             "log10(s)" ;
     vamp:bin_count        1 ;
     vamp:sample_type      vamp:VariableSampleRate ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+plugbase:mfcc a   vamp:Plugin ;
+    dc:title              "MIR.EDU: MFCC" ;
+    vamp:name             "MIR.EDU: MFCC" ;
+    dc:description        """Compute the Mel Frequency Cepstral Coefficients (MFCC) for each frame. MFCCs provide a concise representation of the spectral envelope of a sound, which in turn is related to the sound's timbre. Please refer to the code in MFCC.cpp and the reference provided in MFCC.h for a detailed explanation of how MFCCs are computed.""" ;
+    foaf:maker            [ foaf:name "MIR.EDU by Justin Salamon" ] ; # FIXME could give plugin author's URI here
+    dc:rights             """GPL. Plugin by Justin Salamon""" ;
+#   cc:license            <Place plugin license URI here and uncomment> ; 
+    vamp:identifier       "mfcc" ;
+    vamp:vamp_API_version vamp:api_version_2 ;
+    owl:versionInfo       "1" ;
+    vamp:input_domain     vamp:FrequencyDomain ;
+
+
+    vamp:parameter   plugbase:mfcc_param_minfrequency ;
+    vamp:parameter   plugbase:mfcc_param_maxfrequency ;
+    vamp:parameter   plugbase:mfcc_param_nfilters ;
+    vamp:parameter   plugbase:mfcc_param_ncoeffs ;
+    vamp:parameter   plugbase:mfcc_param_liftering ;
+
+    vamp:output      plugbase:mfcc_output_mfcc ;
+    .
+plugbase:mfcc_param_minfrequency a  vamp:Parameter ;
+    vamp:identifier     "minfrequency" ;
+    dc:title            "Minimum Frequency" ;
+    dc:format           "Hz" ;
+    vamp:min_value       0 ;
+    vamp:max_value       24000 ;
+    vamp:unit           "Hz"  ;
+    vamp:default_value   0 ;
+    vamp:value_names     ();
+    .
+plugbase:mfcc_param_maxfrequency a  vamp:Parameter ;
+    vamp:identifier     "maxfrequency" ;
+    dc:title            "Maximum Frequency" ;
+    dc:format           "Hz" ;
+    vamp:min_value       0 ;
+    vamp:max_value       24000 ;
+    vamp:unit           "Hz"  ;
+    vamp:default_value   4000 ;
+    vamp:value_names     ();
+    .
+plugbase:mfcc_param_nfilters a  vamp:QuantizedParameter ;
+    vamp:identifier     "nfilters" ;
+    dc:title            "Mel Bands" ;
+    dc:format           "" ;
+    vamp:min_value       20 ;
+    vamp:max_value       40 ;
+    vamp:unit           "" ;
+    vamp:quantize_step   1  ;
+    vamp:default_value   40 ;
+    vamp:value_names     ();
+    .
+plugbase:mfcc_param_ncoeffs a  vamp:QuantizedParameter ;
+    vamp:identifier     "ncoeffs" ;
+    dc:title            "MFCC Coefficients" ;
+    dc:format           "" ;
+    vamp:min_value       13 ;
+    vamp:max_value       20 ;
+    vamp:unit           "" ;
+    vamp:quantize_step   1  ;
+    vamp:default_value   13 ;
+    vamp:value_names     ();
+    .
+plugbase:mfcc_param_liftering a  vamp:Parameter ;
+    vamp:identifier     "liftering" ;
+    dc:title            "Liftering Exponent" ;
+    dc:format           "" ;
+    vamp:min_value       0 ;
+    vamp:max_value       1 ;
+    vamp:unit           ""  ;
+    vamp:default_value   0.6 ;
+    vamp:value_names     ();
+    .
+plugbase:mfcc_output_mfcc a  vamp:DenseOutput ;
+    vamp:identifier       "mfcc" ;
+    dc:title              "MFCC" ;
+    dc:description        """"""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "" ;
+    vamp:bin_count        13 ;
 #   vamp:computes_event_type   <Place event type URI here and uncomment> ;
 #   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
 #   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
